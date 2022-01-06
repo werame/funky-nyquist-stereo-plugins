@@ -29,7 +29,8 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 
 ; set tremolo *waveform* 
 (setq *waveform*
-   (abs-env (list (pwl ft 1 (- pw ft) 1 (+ pw ft) -1 (- 1 ft) -1 1 0)(hz-to-step 1.0) t)))
+   (abs-env (list (pwl ft 1 (- pw ft) 1 (+ pw ft) -1 (- 1 ft) -1 1 0)
+    (hz-to-step 1.0) t)))
 
 ;; Function to generate sweep tone
 (defun sweep (sf ef phase)
