@@ -1,12 +1,17 @@
 ;nyquist plug-in
 ;version 1
 ;type process
-;categories "http://lv2plug.in/ns/lv2core#ModulatorPlugin"
 ;name "IsoMod2..."
 ;action "Modulating..."
+;preview selection
 ;author "Steve Daulton, We Rame"
+;release 0.1
+$copyright (_ "Released under terms of the GNU General Public License version 2")
+
 ;; We Rame's stereo version with phase amplitude per channel. A modification of the original:
 ;info "Isochronic Modulator by Steve Daulton. GPL v.2\nhttp://easyspacepro.com\n\n'Pulse Width' controls the length of each pulse.\n'Fade Time' adjusts the fade in/out speed of the pulses.\nThe modulation frequency (speed) and depth transform\ngradually from the initial settings to the final settings.\n\nPlug-in provided as an audio processing effect.\nThe author does not endorse or claim any relevance\nto the theory or practice of brainwave entrainment."
+;; Changelog for the mod
+;;   0.1: Initial version with phases added. Always returns a vector, so it doesn't work on split tracks.
 
 ;control pw "Pulse Width [50%=Square]" real "%" 40 0 100
 ;control ft "Fade Time" real "%" 15 0 100
