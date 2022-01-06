@@ -2,7 +2,7 @@
 ;version 3
 ;type process
 ;categories "http://lv2plug.in/ns/lv2core#ModulatorPlugin"
-;name "Variable Tremolo"
+;name "Variable Tremolo2"
 ;action "Applying Tremolo..."
 ;info "by Steve Daulton. Released under terms of GPL Version 2\nhttp://audacity.easyspacepro.com\n\n'Starting phase' sets where to start tremolo in the waveform cycle.\nThe speed and depth of the tremolo oscilation can be set for the\nstart and the end of the selection.\nThe transition from initial settings to final settings is linear."
 
