@@ -4,10 +4,19 @@
 ;categories "http://lv2plug.in/ns/lv2core#ModulatorPlugin"
 ;name "Variable Tremolo2"
 ;action "Applying Tremolo..."
+;preview selection
+;author "Steve Daulton, We Rame"
+;release 0.1
+$copyright (_ "Released under terms of the GNU General Public License version 2")
+
+;; We Rame's stereo version with phase amplitude per channel. A modification of the original:
 ;info "by Steve Daulton. Released under terms of GPL Version 2\nhttp://audacity.easyspacepro.com\n\n'Starting phase' sets where to start tremolo in the waveform cycle.\nThe speed and depth of the tremolo oscilation can be set for the\nstart and the end of the selection.\nThe transition from initial settings to final settings is linear."
+;; Changelog for the mod
+;;   0.1: Initial version with phases added. Always returns a vector, so it doesn't work on split tracks.
 
 ;control wave "Tremolo Shape" choice "sine,triangle,sawtooth,inverse sawtooth,square" 0
-;control phase "Starting Phase" real "degrees" 90 0 360
+;control phaseL "Starting Phase Left" real "degrees" 90 0 360
+;control phaseR "Starting Phase Right" real "degrees" 270 0 360
 ;control startf "Initial Tremolo Frequency" real "Hz" 4 1 20
 ;control endf "Final Tremolo Frequency" real "Hz" 12 1 20
 ;control starta "Initial Tremolo Amount" int "%" 40 0 100
@@ -34,4 +43,5 @@
    (enda (/ enda 100.0))
    (wet (pwlv starta 1 enda))
    (dry (sum 1 (mult wet -1))))
-   (mult s (sum dry (mult wet (sweep startf endf *waveform* phase)))))
+   (mult s (vector (sum dry (mult wet (sweep startf endf *waveform* phaseL)))
+                   (sum dry (mult wet (sweep startf endf *waveform* phaseR))))))
