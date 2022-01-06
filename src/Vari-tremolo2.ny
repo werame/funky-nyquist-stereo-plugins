@@ -34,9 +34,7 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
    (t ; square
    (abs-env (list (pwl 0 1 .495 1 .5 -1 .995 -1 1 1 1) (hz-to-step 1.0) t)))))
 
-;; Function to generate sweep tone
-(defun sweep (sf ef wf ph)
-     (mult 0.5 (sum 1.0 (fmlfo (pwlv sf 1.0 ef) wf ph))))
+(load "sweep.lsp" :verbose t :print t)
 
 (let* ((starta (/ starta 100.0))
    (enda (/ enda 100.0))
