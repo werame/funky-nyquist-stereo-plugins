@@ -1,7 +1,6 @@
 ;nyquist plug-in
 ;version 3
 ;type process
-;categories "http://lv2plug.in/ns/lv2core#ModulatorPlugin"
 ;name "Variable Tremolo2"
 ;action "Applying Tremolo..."
 ;preview selection
