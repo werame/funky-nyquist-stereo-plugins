@@ -28,7 +28,7 @@
 
 ;; Function to generate sweep tone
 (defun sweep (sf ef wf ph)
-     (mult 0.5 (sum 1.0 (fmlfo (pwlv sf 1.0 ef) *waveform* phase))))
+     (mult 0.5 (sum 1.0 (fmlfo (pwlv sf 1.0 ef) wf ph))))
 
 (let* ((starta (/ starta 100.0))
    (enda (/ enda 100.0))
