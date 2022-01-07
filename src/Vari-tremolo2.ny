@@ -5,7 +5,7 @@
 ;action "Applying Tremolo..."
 ;preview selection
 ;author "Steve Daulton, We Rame"
-;release 0.3.3
+;release 0.3.3.1
 $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ;; We Rame's stereo version with phase amplitude per channel. A modification of the original:
@@ -24,10 +24,10 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 ;control enda "Final Tremolo Amount" int "%" 60 0 100
 
 ; wavetable of the tremolo lfo
-(setq *trem-table* (cond
-   ((= wavenum 0) *sine-table*)
-   ((= wavenum 1) *tri-table*) ; triangle
-   ((> wavenum 1) (abs-env (maketable (case wavenum
+(setq *trem-table* (case wavenum
+   (0 *sine-table*)
+   (1 *tri-table*) ; triangle
+   (t (abs-env (maketable (case wavenum
     (2 (pwl 0 -1 .995  1 1 -1 1)) ; sawtooth
     (3 (pwl 0 1 .995  -1 1 1 1)) ; inverse sawtooth
     (4 (pwl 0 1 .495 1 .5 -1 .995 -1 1 1 1)))))))) ; square
