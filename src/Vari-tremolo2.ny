@@ -5,7 +5,7 @@
 ;action "Applying Tremolo..."
 ;preview selection
 ;author "Steve Daulton, We Rame"
-;release 0.3
+;release 0.3.3
 $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ;; We Rame's stereo version with phase amplitude per channel. A modification of the original:
@@ -38,18 +38,5 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 
 (load "sweep.lsp" :verbose t :print t)
 
-;; converts mono track pan slider to phase: -1..1 to phaseL..phaseR
-(defun phase-from-signed-pan (signed-pan)
-   (let ((unsigned-pan (* (+ 1.0 signed-pan) 0.5)))
-      (+ phaseL (* (- phaseR phaseL) unsigned-pan))))
-
-;; if stereo track make array of phases for multichan-expand
-;; else compute one phase using mono track pan
-(setq multichan-phase
-   (if (arrayp *track*)
-       (vector (phase-from-signed-pan -1) (phase-from-signed-pan 1))
-       ; ^^ ignoring stereo track pan b/c it has different semantics than mono pan
-       (phase-from-signed-pan (get '*track* 'pan))))
-
 (multichan-expand #'am-sweep *track* (/ starta 100.0) (/ enda 100.0)
- startf endf *waveform* multichan-phase)
+ startf endf *waveform* (multichan-phase-from-track *track* phaseL phaseR))
