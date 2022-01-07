@@ -5,7 +5,7 @@
 ;action "Modulating..."
 ;preview selection
 ;author "Steve Daulton, We Rame"
-;release 0.2
+;release 0.3
 $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ;; We Rame's stereo version with phase amplitude per channel. A modification of the original:
@@ -13,6 +13,7 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 ;; Changelog for the mod
 ;;   0.1: Initial version with phases added. Always returns a vector, so it doesn't work on split tracks.
 ;;   0.2: Made it work on split tracks. Requires v4 plug-in support to read pan info from Audacity.
+;;   0.3: Refactored to use external sweep.lsb library shared with similar plugins
 
 ;control pw "Pulse Width [50%=Square]" real "%" 40 0 100
 ;control ft "Fade Time" real "%" 15 0 100
