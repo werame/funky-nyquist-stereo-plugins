@@ -35,20 +35,22 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 
 (load "sweep.lsp" :verbose t :print t)
 
-;; converts mono track pan slider to phase: -1..1 to phaseL..phaseR
-(defun phase-from-signed-pan (signed-pan)
+;; converts mono track pan slider to phase: -1..1 to phase-left..phase-right
+; todo: maybe make it return a lambda after binding phase-left phase-right
+(defun phase-from-signed-pan (signed-pan phase-left phase-right)
    (let ((unsigned-pan (* (+ 1.0 signed-pan) 0.5)))
-      (+ phaseL (* (- phaseR phaseL) unsigned-pan))))
+      (+ phase-left (* (- phase-right phase-left) unsigned-pan))))
 
 ;; if stereo track make array of phases for multichan-expand
 ;; else compute one phase using mono track pan
-(setq multichan-phase
-   (if (arrayp *track*)
-       (vector (phase-from-signed-pan -1) (phase-from-signed-pan 1))
+(defun multichan-phase-from-track (track phase-left phase-right)
+   (if (arrayp track)
+       (vector (phase-from-signed-pan -1 phase-left phase-right) 
+               (phase-from-signed-pan 1 phase-left phase-right))
        ; ^^ ignoring stereo track pan b/c it has different semantics than mono pan
-       (phase-from-signed-pan (get '*track* 'pan))))
+       (phase-from-signed-pan (get '*track* 'pan) phase-left phase-right)))
 
 ; todo: this now allows mc-expanded starta and enda; maybe add sep. ctrls.
 ; todo: and likewise for startf, endf
 (multichan-expand #'am-sweep *track* (/ starta 100.0) (/ enda 100.0)
- startf endf *waveform* multichan-phase)
+ startf endf *waveform* (multichan-phase-from-track *track* phaseL phaseR))
