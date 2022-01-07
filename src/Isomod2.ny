@@ -18,7 +18,7 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 ;control ft "Fade Time" real "%" 15 0 100
 ;control startf "Initial Modulation Frequency" real "Hz" 7 1 20
 ;control endf "Final Modulation Frequency" real "Hz" 2 1 20
-;control starta "Initial Modulation Depth" int "%" 100 0 100
+;control starta "Initial Modulation Depth" int "%" 50 0 100
 ;control enda "Final Modulation Depth" int "%" 100 0 100
 ;control phaseL "Initial Phase Left" real "degrees" 0 0 360
 ;control phaseR "Initial Phase Right" real "degrees" 180 0 360
