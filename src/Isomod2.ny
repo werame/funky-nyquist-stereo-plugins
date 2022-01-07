@@ -34,12 +34,12 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 
 (load "sweep.lsp" :verbose t :print t)
 
-(defun isomod-with-phase (mono-snd phase)
+(defun am-sweep (mono-snd table phase)
    (let* ((starta (/ starta 100.0))
           (enda (/ enda 100.0))
           (wet (pwlv starta 1 enda))
           (dry (sum 1 (mult wet -1))))
-      (mult mono-snd (sum dry (mult wet (sweep startf endf *waveform* phase))))))
+      (mult mono-snd (sum dry (mult wet (sweep startf endf table phase))))))
 
 ;; converts mono track pan slider to phase: -1..1 to phaseL..phaseR
 (defun phase-from-signed-pan (signed-pan)
@@ -54,4 +54,4 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
        ; ^^ ignoring stereo track pan b/c it has different semantics than mono pan
        (phase-from-signed-pan (get '*track* 'pan))))
 
-(multichan-expand #'isomod-with-phase *track* multichan-phase)
+(multichan-expand #'am-sweep *track* *waveform* multichan-phase)
