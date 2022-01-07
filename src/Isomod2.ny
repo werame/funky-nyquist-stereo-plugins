@@ -32,16 +32,14 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
    (abs-env (list (pwl ft 1 (- pw ft) 1 (+ pw ft) -1 (- 1 ft) -1 1 0)
     (hz-to-step 1.0) t)))
 
-;; Function to generate sweep tone
-(defun sweep (sf ef phase)
-   (mult 0.5 (sum 1.0 (fmlfo (pwlv sf 1.0 ef) *waveform* phase))))
+(load "sweep.lsp" :verbose t :print t)
 
 (defun isomod-with-phase (mono-snd phase)
    (let* ((starta (/ starta 100.0))
           (enda (/ enda 100.0))
           (wet (pwlv starta 1 enda))
           (dry (sum 1 (mult wet -1))))
-      (mult mono-snd (sum dry (mult wet (sweep startf endf phase))))))
+      (mult mono-snd (sum dry (mult wet (sweep startf endf *waveform* phase))))))
 
 ;; converts mono track pan slider to phase: -1..1 to phaseL..phaseR
 (defun phase-from-signed-pan (signed-pan)
