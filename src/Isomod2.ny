@@ -34,10 +34,11 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 
 (load "sweep.lsp" :verbose t :print t)
 
-(defun am-sweep (mono-snd table phase)
-   (let* ((starta (/ starta 100.0))
-          (enda (/ enda 100.0))
-          (wet (pwlv starta 1 enda))
+; todo: maybe factor out the wet and dry sound objects
+; also need to extract the startf and endf below
+; or again the whole f-sweep thing could be extracted
+(defun am-sweep (mono-snd ini-wet fin-wet table phase)
+   (let* ((wet (pwlv ini-wet 1 fin-wet))
           (dry (sum 1 (mult wet -1))))
       (mult mono-snd (sum dry (mult wet (sweep startf endf table phase))))))
 
@@ -54,4 +55,6 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
        ; ^^ ignoring stereo track pan b/c it has different semantics than mono pan
        (phase-from-signed-pan (get '*track* 'pan))))
 
-(multichan-expand #'am-sweep *track* *waveform* multichan-phase)
+; todo: this now allows mc-expanded starta and enda; maybe add sep. ctrls.
+(multichan-expand #'am-sweep *track* (/ starta 100.0) (/ enda 100.0)
+ *waveform* multichan-phase)
