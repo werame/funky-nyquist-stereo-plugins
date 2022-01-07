@@ -35,12 +35,12 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 (load "sweep.lsp" :verbose t :print t)
 
 ; todo: maybe factor out the wet and dry sound objects
-; also need to extract the startf and endf below
-; or again the whole f-sweep thing could be extracted
-(defun am-sweep (mono-snd ini-wet fin-wet table phase)
+; todo: the whole f-sweep thing could also be extracted
+(defun am-sweep (mono-snd ini-wet fin-wet ini-modf fin-modf table phase)
    (let* ((wet (pwlv ini-wet 1 fin-wet))
           (dry (sum 1 (mult wet -1))))
-      (mult mono-snd (sum dry (mult wet (sweep startf endf table phase))))))
+      (mult mono-snd (sum dry (mult wet
+       (sweep ini-modf fin-modf table phase)))))) ; todo: let-var this
 
 ;; converts mono track pan slider to phase: -1..1 to phaseL..phaseR
 (defun phase-from-signed-pan (signed-pan)
@@ -56,5 +56,6 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
        (phase-from-signed-pan (get '*track* 'pan))))
 
 ; todo: this now allows mc-expanded starta and enda; maybe add sep. ctrls.
+; todo: and likewise for startf, endf
 (multichan-expand #'am-sweep *track* (/ starta 100.0) (/ enda 100.0)
- *waveform* multichan-phase)
+ startf endf *waveform* multichan-phase)
