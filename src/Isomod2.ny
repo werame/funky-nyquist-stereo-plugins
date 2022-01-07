@@ -25,7 +25,7 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 ;control phaseR "Initial Phase Right" real "degrees" 180 0 360
 
 (setq pw (/ pw 100.0))
-(setq  ft (/ ft 400.0))
+(setq ft (/ ft 400.0))
 (setq ft (* ft (min pw (- 1 pw)) 2))
 
 ; set tremolo *waveform* 
