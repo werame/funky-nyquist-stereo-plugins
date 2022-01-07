@@ -1,11 +1,11 @@
 ;nyquist plug-in
-;version 3
+;version 4
 ;type process
 ;name "Variable Tremolo2"
 ;action "Applying Tremolo..."
 ;preview selection
 ;author "Steve Daulton, We Rame"
-;release 0.1
+;release 0.2
 $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ;; We Rame's stereo version with phase amplitude per channel. A modification of the original:
@@ -36,9 +36,18 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 
 (load "sweep.lsp" :verbose t :print t)
 
-(let* ((starta (/ starta 100.0))
-   (enda (/ enda 100.0))
-   (wet (pwlv starta 1 enda))
-   (dry (sum 1 (mult wet -1))))
-   (mult s (vector (sum dry (mult wet (sweep startf endf *waveform* phaseL)))
-                   (sum dry (mult wet (sweep startf endf *waveform* phaseR))))))
+;; converts mono track pan slider to phase: -1..1 to phaseL..phaseR
+(defun phase-from-signed-pan (signed-pan)
+   (let ((unsigned-pan (* (+ 1.0 signed-pan) 0.5)))
+      (+ phaseL (* (- phaseR phaseL) unsigned-pan))))
+
+;; if stereo track make array of phases for multichan-expand
+;; else compute one phase using mono track pan
+(setq multichan-phase
+   (if (arrayp *track*)
+       (vector (phase-from-signed-pan -1) (phase-from-signed-pan 1))
+       ; ^^ ignoring stereo track pan b/c it has different semantics than mono pan
+       (phase-from-signed-pan (get '*track* 'pan))))
+
+(multichan-expand #'am-sweep *track* (/ starta 100.0) (/ enda 100.0)
+ startf endf *waveform* multichan-phase)
