@@ -15,7 +15,7 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 ;;   0.2: Made it work on split tracks. Requires v4 plug-in support to read pan info from Audacity.
 ;;   0.3: Refactored to use external sweep.lsb library shared with similar plugins
 
-;control wave "Tremolo Shape" choice "sine,triangle,sawtooth,inverse sawtooth,square" 0
+;control wavenum "Tremolo Shape" choice "sine,triangle,sawtooth,inverse sawtooth,square" 0
 ;control phaseL "Starting Phase Left" real "degrees" 90 0 360
 ;control phaseR "Starting Phase Right" real "degrees" 270 0 360
 ;control startf "Initial Tremolo Frequency" real "Hz" 4 1 20
@@ -23,20 +23,16 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 ;control starta "Initial Tremolo Amount" int "%" 20 0 100
 ;control enda "Final Tremolo Amount" int "%" 60 0 100
 
-; set tremolo *waveform* 
-(setq *waveform* (cond
-   ((= wave 0) ; sine
-   *sine-table*)
-   ((= wave 1) ; triangle
-   *tri-table*)
-   ((= wave 2) ; sawtooth
-   (abs-env (list (pwl 0 -1 .995  1 1 -1 1) (hz-to-step 1.0) t)))
-   ((= wave 3) ; inverse sawtooth
-   (abs-env (list (pwl 0 1 .995  -1 1 1 1) (hz-to-step 1.0) t)))
-   (t ; square
-   (abs-env (list (pwl 0 1 .495 1 .5 -1 .995 -1 1 1 1) (hz-to-step 1.0) t)))))
+; wavetable of the tremolo lfo
+(setq *trem-table* (cond
+   ((= wavenum 0) *sine-table*)
+   ((= wavenum 1) *tri-table*) ; triangle
+   ((> wavenum 1) (abs-env (maketable (case wavenum
+    (2 (pwl 0 -1 .995  1 1 -1 1)) ; sawtooth
+    (3 (pwl 0 1 .995  -1 1 1 1)) ; inverse sawtooth
+    (4 (pwl 0 1 .495 1 .5 -1 .995 -1 1 1 1)))))))) ; square
 
 (load "sweep.lsp" :verbose t :print t)
 
 (multichan-expand #'am-sweep *track* (/ starta 100.0) (/ enda 100.0)
- startf endf *waveform* (multichan-phase-from-track *track* phaseL phaseR))
+ startf endf *trem-table* (multichan-phase-from-track *track* phaseL phaseR))
