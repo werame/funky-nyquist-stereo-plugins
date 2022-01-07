@@ -18,8 +18,8 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 ;control phaseR "Starting Phase Right" real "degrees" 270 0 360
 ;control startf "Initial Tremolo Frequency" real "Hz" 4 1 20
 ;control endf "Final Tremolo Frequency" real "Hz" 12 1 20
-;control starta "Initial Tremolo Amount" int "%" 40 0 100
-;control enda "Final Tremolo Amount" int "%" 40 0 100
+;control starta "Initial Tremolo Amount" int "%" 20 0 100
+;control enda "Final Tremolo Amount" int "%" 60 0 100
 
 ; set tremolo *waveform* 
 (setq *waveform* (cond
