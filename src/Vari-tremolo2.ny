@@ -5,7 +5,7 @@
 ;action "Applying Tremolo..."
 ;preview selection
 ;author "Steve Daulton, We Rame"
-;release 0.3.8
+;release 0.3.9
 $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ;; We Rame's stereo version with phase amplitude per channel. A modification of the original:
@@ -16,11 +16,11 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 ;;   0.3: Refactored to use external sweep.lsb library shared with similar plugins
 ;;   0.3.8: added sweep type and uses new control-sweep and new gen-based am-sweep from sweep.lsp;
 
-;control wavenum "Tremolo Shape" choice "sine,triangle,sawtooth,inverse sawtooth,square" 0
+;control wavenum "Tremolo Shape" choice "Sine,Triangle,Sawtooth,Inverse sawtooth,Square" 0
 ;control phaseL "Starting Phase Left" real "degrees" 90 0 360
 ;control phaseR "Starting Phase Right" real "degrees" 270 0 360
-;control startf "Initial Tremolo Frequency" real "Hz" 4 1 20
-;control endf "Final Tremolo Frequency" real "Hz" 12 1 20
+;control startf "Initial Tremolo Frequency" real "Hz" 2 0.1 50
+;control endf "Final Tremolo Frequency" real "Hz" 12 0.1 50
 ;control freq-sweep-type "Frequency Sweep Type" choice "Linear,Exponential" 0
 ;control starta "Initial Tremolo Amount" int "%" 20 0 100
 ;control enda "Final Tremolo Amount" int "%" 60 0 100

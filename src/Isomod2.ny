@@ -5,7 +5,7 @@
 ;action "Modulating..."
 ;preview selection
 ;author "Steve Daulton, We Rame"
-;release 0.3.8
+;release 0.3.9
 $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ;; We Rame's stereo version with phase amplitude per channel. A modification of the original:
@@ -18,8 +18,8 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 
 ;control pw "Pulse Width [50%=Square]" real "%" 40 0 100
 ;control ft "Fade Time" real "%" 15 0 100
-;control startf "Initial Modulation Frequency" real "Hz" 7 1 20
-;control endf "Final Modulation Frequency" real "Hz" 2 1 20
+;control startf "Initial Modulation Frequency" real "Hz" 7 0.1 50
+;control endf "Final Modulation Frequency" real "Hz" 2 0.1 50
 ;control freq-sweep-type "Frequency Sweep Type" choice "Linear,Exponential" 0
 ;control starta "Initial Modulation Depth" int "%" 50 0 100
 ;control enda "Final Modulation Depth" int "%" 100 0 100
