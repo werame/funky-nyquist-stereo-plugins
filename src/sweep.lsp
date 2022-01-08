@@ -1,7 +1,7 @@
 ;; author: We Rame
 ;; heavily refactored and expanded into a library shared by several plugins
 ;; starting from Steve Daulton's plugins collection
-;; release 0.3.9.7
+;; release 0.4
 ;; $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ; a basic sweep from one value to another; shape linear or exponential
