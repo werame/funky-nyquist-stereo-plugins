@@ -5,7 +5,7 @@
 ;action "Modulating..."
 ;preview selection
 ;author "Steve Daulton, We Rame"
-;release 0.3.9.7
+;release 0.3.9.8
 $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ;; We Rame's stereo version with phase amplitude per channel. A modification of the original:
@@ -21,7 +21,7 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 ;control startf "Initial Modulation Frequency" real "Hz" 20 0.1 50
 ;control endf "Final Modulation Frequency" real "Hz" 1 0.1 50
 ;control freq-sweep-type "Frequency Sweep Type" choice "Linear,Exponential" 1
-;control reverse-at "Reverse Sweep at" real "fraction (1 = no)" 0.5 0 1
+;control reverse-at "Reverse Sweep at" int "% (100% = no)" 50 0 100
 ;control starta "Initial Modulation Depth" int "%" 50 0 100
 ;control enda "Final Modulation Depth" int "%" 100 0 100
 ;control phaseL "Initial Phase Left" real "degrees" 0 0 360
@@ -30,6 +30,8 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 (setq pw (/ pw 100.0))
 (setq ft (/ ft 400.0))
 (setq ft (* ft (min pw (- 1 pw)) 2))
+; more lovely boilerplate
+(setq reverse-at (/ reverse-at 100.0))
 
 ; wavetable of the tremolo lfo
 (setq *trem-table*
