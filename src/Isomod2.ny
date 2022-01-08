@@ -5,7 +5,7 @@
 ;action "Modulating..."
 ;preview selection
 ;author "Steve Daulton, We Rame"
-;release 0.3.9
+;release 0.3.9.7
 $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ;; We Rame's stereo version with phase amplitude per channel. A modification of the original:
@@ -18,9 +18,10 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 
 ;control pw "Pulse Width [50%=Square]" real "%" 40 0 100
 ;control ft "Fade Time" real "%" 15 0 100
-;control startf "Initial Modulation Frequency" real "Hz" 7 0.1 50
-;control endf "Final Modulation Frequency" real "Hz" 2 0.1 50
-;control freq-sweep-type "Frequency Sweep Type" choice "Linear,Exponential" 0
+;control startf "Initial Modulation Frequency" real "Hz" 20 0.1 50
+;control endf "Final Modulation Frequency" real "Hz" 1 0.1 50
+;control freq-sweep-type "Frequency Sweep Type" choice "Linear,Exponential" 1
+;control reverse-at "Reverse Sweep at" real "fraction (1 = no)" 0.5 0 1
 ;control starta "Initial Modulation Depth" int "%" 50 0 100
 ;control enda "Final Modulation Depth" int "%" 100 0 100
 ;control phaseL "Initial Phase Left" real "degrees" 0 0 360
@@ -37,10 +38,14 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 (load "sweep.lsp" :verbose t :print t)
 
 ; has potential for more complex shapes, but the dialog box is pretty limiting
-(setq am-freq (control-sweep startf endf freq-sweep-type))
+; todo: maybe should avoid these 3 boilerplate setqs with a helper func
+;   but that creates a packing/unpacking issue that is just as boilerplate
+;   unless we move the multichan-expand call insider the helper too
+(setq am-freq (control-sweep startf endf freq-sweep-type reverse-at))
 
 ;todo: optional sweep type maybe, besides linear
-(setq wet (control-sweep (/ starta 100.0) (/ enda 100.0)))
+;hmmm: should the reverse point auto-apply to the wet ramp too? Yes for now.
+(setq wet (control-sweep (/ starta 100.0) (/ enda 100.0) 0 reverse-at))
 (setq dry (auto-dry wet))
 
 ; todo: this now allows mc-expanded starta and enda; maybe add sep. ctrls.
