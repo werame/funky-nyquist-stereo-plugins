@@ -5,7 +5,7 @@
 ;action "Applying Tremolo..."
 ;preview selection
 ;author "Steve Daulton, We Rame"
-;release 0.3.9.4
+;release 0.3.9.5
 $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ;; We Rame's stereo version with phase amplitude per channel. A modification of the original:
@@ -22,7 +22,7 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 ;control startf "Initial Tremolo Frequency" real "Hz" 2 0.1 50
 ;control endf "Final Tremolo Frequency" real "Hz" 12 0.1 50
 ;control freq-sweep-type "Frequency Sweep Type" choice "Linear,Exponential" 1
-;control reverse-point "Reverse Sweep at" real "fraction (0 = no)" 0.5 0 1
+;control reverse-point "Reverse Sweep at" real "fraction (1 = no)" 0.5 0 1
 ;control starta "Initial Tremolo Amount" int "%" 20 0 100
 ;control enda "Final Tremolo Amount" int "%" 60 0 100
 

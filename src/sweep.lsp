@@ -1,16 +1,16 @@
 ;; author: We Rame
 ;; heavily refactored and expanded into a library shared by several plugins
 ;; starting from Steve Daulton's plugins collection
-;; release 0.3.9.2
+;; release 0.3.9.5
 ;; $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ; a basic sweep from one value to another; shape linear or exponential
 ; starts to look like SuperCollider's Env :D
 (defun control-sweep (ini-val fin-val &optional (sweep-type 0) (reverse-at 0.0))
    (let ((genf (case sweep-type (0 'pwlv) (1 'pwev)))
-         (epts (if (or (< reverse-at 0.01) (> reverse-at 0.99))
-                   (list ini-val 1.0 fin-val)
-                   (list ini-val reverse-at fin-val 1.0 ini-val))))
+         (epts (cond ((> reverse-at 0.99) (list ini-val 1.0 fin-val))
+                     ((< reverse-at 0.01) (list fin-val 1.0 ini-val))
+                     (t (list ini-val reverse-at fin-val 1.0 ini-val)))))
       (apply genf epts)))
 ; ^^ interestingly if you run apply in debug mode it's very slow
 
