@@ -29,12 +29,6 @@
       (mult mono-snd (sum dry (mult wet
        (sweep ini-modf fin-modf table phase)))))) ; todo: let-var this
 
-(defun am-sweep-new (mono-snd ini-wet fin-wet mod-freq-gen table phase)
-   (let* ((wet (pwlv ini-wet 1 fin-wet))
-          (dry (sum 1 (mult wet -1))))
-      (mult mono-snd (sum dry (mult wet
-       (fmenv mod-freq-gen table phase)))))) ; todo: let-var this
-
 (defun am-sweep-new2 (mono-snd wet-gen dry-gen mod-freq-gen table phase)
    (mult mono-snd (sum dry-gen (mult wet-gen
        (fmenv mod-freq-gen table phase)))))
