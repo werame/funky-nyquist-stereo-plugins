@@ -5,7 +5,7 @@
 ;action "Modulating..."
 ;preview selection
 ;author "Steve Daulton, We Rame"
-;release 0.3.5
+;release 0.3.6.1
 $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ;; We Rame's stereo version with phase amplitude per channel. A modification of the original:
@@ -14,7 +14,7 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 ;;   0.1: Initial version with phases added. Always returns a vector, so it doesn't work on split tracks.
 ;;   0.2: Made it work on split tracks. Requires v4 plug-in support to read pan info from Audacity.
 ;;   0.3: Refactored to use external sweep.lsp library shared with similar plugins
-;;   0.3.5: Refactored to use freq-gen in sweep.lsp; added sweep type
+;;   0.3.5: Refactored to use am-freq in sweep.lsp; added sweep type
 
 ;control pw "Pulse Width [50%=Square]" real "%" 40 0 100
 ;control ft "Fade Time" real "%" 15 0 100
@@ -35,12 +35,15 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
    (abs-env (maketable (pwl ft 1 (- pw ft) 1 (+ pw ft) -1 (- 1 ft) -1 1 0))))
 
 ; has potential for more complex shapes, but the dialog box is pretty limiting
-(setq freq-gen (case freq-sweep-type
+(setq am-freq (case freq-sweep-type
    (0 (pwlv startf 1.0 endf))
    (1 (pwev startf 1.0 endf))))
+
+(setq wet (pwlv (/ starta 100.0) 1 (/ enda 100.0)))
+(setq dry (sum 1 (mult wet -1)))
 
 (load "sweep.lsp" :verbose t :print t)
 
 ; todo: this now allows mc-expanded starta and enda; maybe add sep. ctrls.
-(multichan-expand #'am-sweep-new *track* (/ starta 100.0) (/ enda 100.0)
-  freq-gen *trem-table* (multichan-phase-from-track *track* phaseL phaseR))
+(multichan-expand #'am-sweep-new2 *track* wet dry am-freq *trem-table*
+ (multichan-phase-from-track *track* phaseL phaseR))

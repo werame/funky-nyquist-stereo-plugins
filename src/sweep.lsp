@@ -1,5 +1,5 @@
 ;; author "Steve Daulton, We Rame"
-;; release 0.3
+;; release 0.3.6
 ;; $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ;; Library shared by several plugins
@@ -28,6 +28,10 @@
           (dry (sum 1 (mult wet -1))))
       (mult mono-snd (sum dry (mult wet
        (fmenv mod-freq-gen table phase)))))) ; todo: let-var this
+
+(defun am-sweep-new2 (mono-snd wet-gen dry-gen mod-freq-gen table phase)
+   (mult mono-snd (sum dry-gen (mult wet-gen
+       (fmenv mod-freq-gen table phase)))))
 
 ;; converts mono track pan slider to phase: -1..1 to phase-left..phase-right
 ; todo: maybe make it return a lambda after binding phase-left phase-right
