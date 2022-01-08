@@ -5,7 +5,7 @@
 ;action "Modulating..."
 ;preview selection
 ;author "Steve Daulton, We Rame"
-;release 0.3.6.1
+;release 0.3.7
 $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ;; We Rame's stereo version with phase amplitude per channel. A modification of the original:
@@ -39,8 +39,14 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
    (0 (pwlv startf 1.0 endf))
    (1 (pwev startf 1.0 endf))))
 
-(setq wet (pwlv (/ starta 100.0) 1 (/ enda 100.0)))
-(setq dry (sum 1 (mult wet -1)))
+(defun wet-sweep (ini-wet fin-wet)
+   (pwlv ini-wet 1 fin-wet))
+
+(defun auto-dry (wet)
+   (sum 1 (mult wet -1)))
+
+(setq wet (wet-sweep (/ starta 100.0) (/ enda 100.0)))
+(setq dry (auto-dry wet))
 
 (load "sweep.lsp" :verbose t :print t)
 
