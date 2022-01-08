@@ -10,6 +10,11 @@
 (defun sweep (sf ef wf ph)
      (mult 0.5 (sum 1.0 (fmlfo (pwlv sf 1.0 ef) wf ph))))
 
+;; A cyclic amplitude envelope (i.e. unipolar 0..1-valued signal) modulated
+;; in its frequency by an arbitrary SOUND (stream) object yielding frequencies
+(defun fmenv (freq-gen table phase)
+   (mult 0.5 (sum 1.0 (fmlfo freq-gen table phase))))
+
 ; todo: maybe factor out the wet and dry sound objects
 ; todo: the whole f-sweep thing could also be extracted
 (defun am-sweep (mono-snd ini-wet fin-wet ini-modf fin-modf table phase)
@@ -17,6 +22,12 @@
           (dry (sum 1 (mult wet -1))))
       (mult mono-snd (sum dry (mult wet
        (sweep ini-modf fin-modf table phase)))))) ; todo: let-var this
+
+(defun am-sweep-new (mono-snd ini-wet fin-wet mod-freq-gen table phase)
+   (let* ((wet (pwlv ini-wet 1 fin-wet))
+          (dry (sum 1 (mult wet -1))))
+      (mult mono-snd (sum dry (mult wet
+       (fmenv mod-freq-gen table phase)))))) ; todo: let-var this
 
 ;; converts mono track pan slider to phase: -1..1 to phase-left..phase-right
 ; todo: maybe make it return a lambda after binding phase-left phase-right

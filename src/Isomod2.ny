@@ -5,7 +5,7 @@
 ;action "Modulating..."
 ;preview selection
 ;author "Steve Daulton, We Rame"
-;release 0.3.3.1
+;release 0.3.4a
 $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ;; We Rame's stereo version with phase amplitude per channel. A modification of the original:
@@ -32,9 +32,11 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 (setq *trem-table*
    (abs-env (maketable (pwl ft 1 (- pw ft) 1 (+ pw ft) -1 (- 1 ft) -1 1 0))))
 
+(setq freq-gen (pwlv startf 1.0 endf))
+
 (load "sweep.lsp" :verbose t :print t)
 
 ; todo: this now allows mc-expanded starta and enda; maybe add sep. ctrls.
 ; todo: and likewise for startf, endf
-(multichan-expand #'am-sweep *track* (/ starta 100.0) (/ enda 100.0)
- startf endf *trem-table* (multichan-phase-from-track *track* phaseL phaseR))
+(multichan-expand #'am-sweep-new *track* (/ starta 100.0) (/ enda 100.0)
+  freq-gen *trem-table* (multichan-phase-from-track *track* phaseL phaseR))
