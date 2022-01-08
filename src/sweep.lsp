@@ -6,11 +6,11 @@
 
 ; a basic sweep from one value to another; shape linear or exponential
 ; starts to look like SuperCollider's Env :D
-(defun control-sweep (ini-val fin-val &optional (sweep-type 0) (mirror-at 0.0))
+(defun control-sweep (ini-val fin-val &optional (sweep-type 0) (reverse-at 0.0))
    (let ((genf (case sweep-type (0 'pwlv) (1 'pwev)))
-         (epts (if (or (< mirror-at 0.01) (> mirror-at 0.99))
+         (epts (if (or (< reverse-at 0.01) (> reverse-at 0.99))
                    (list ini-val 1.0 fin-val)
-                   (list ini-val mirror-at fin-val 1.0 ini-val))))
+                   (list ini-val reverse-at fin-val 1.0 ini-val))))
       (apply genf epts)))
 ; ^^ interestingly if you run apply in debug mode it's very slow
 
