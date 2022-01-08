@@ -5,7 +5,7 @@
 ;action "Modulating..."
 ;preview selection
 ;author "Steve Daulton, We Rame"
-;release 0.3.4a
+;release 0.3.5
 $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ;; We Rame's stereo version with phase amplitude per channel. A modification of the original:
@@ -13,12 +13,14 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 ;; Changelog for the mod
 ;;   0.1: Initial version with phases added. Always returns a vector, so it doesn't work on split tracks.
 ;;   0.2: Made it work on split tracks. Requires v4 plug-in support to read pan info from Audacity.
-;;   0.3: Refactored to use external sweep.lsb library shared with similar plugins
+;;   0.3: Refactored to use external sweep.lsp library shared with similar plugins
+;;   0.3.5: Refactored to use freq-gen in sweep.lsp; added sweep type
 
 ;control pw "Pulse Width [50%=Square]" real "%" 40 0 100
 ;control ft "Fade Time" real "%" 15 0 100
 ;control startf "Initial Modulation Frequency" real "Hz" 7 1 20
 ;control endf "Final Modulation Frequency" real "Hz" 2 1 20
+;control freq-sweep-type "Frequency Sweep Type" choice "Linear,Exponential" 0
 ;control starta "Initial Modulation Depth" int "%" 50 0 100
 ;control enda "Final Modulation Depth" int "%" 100 0 100
 ;control phaseL "Initial Phase Left" real "degrees" 0 0 360
@@ -32,11 +34,13 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 (setq *trem-table*
    (abs-env (maketable (pwl ft 1 (- pw ft) 1 (+ pw ft) -1 (- 1 ft) -1 1 0))))
 
-(setq freq-gen (pwlv startf 1.0 endf))
+; has potential for more complex shapes, but the dialog box is pretty limiting
+(setq freq-gen (case freq-sweep-type
+   (0 (pwlv startf 1.0 endf))
+   (1 (pwev startf 1.0 endf))))
 
 (load "sweep.lsp" :verbose t :print t)
 
 ; todo: this now allows mc-expanded starta and enda; maybe add sep. ctrls.
-; todo: and likewise for startf, endf
 (multichan-expand #'am-sweep-new *track* (/ starta 100.0) (/ enda 100.0)
   freq-gen *trem-table* (multichan-phase-from-track *track* phaseL phaseR))
