@@ -5,7 +5,7 @@
 ;action "Applying Tremolo..."
 ;preview selection
 ;author "Steve Daulton, We Rame"
-;release 0.3.9.5
+;release 0.3.9.7
 $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ;; We Rame's stereo version with phase amplitude per channel. A modification of the original:
@@ -22,7 +22,7 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 ;control startf "Initial Tremolo Frequency" real "Hz" 2 0.1 50
 ;control endf "Final Tremolo Frequency" real "Hz" 12 0.1 50
 ;control freq-sweep-type "Frequency Sweep Type" choice "Linear,Exponential" 1
-;control reverse-point "Reverse Sweep at" real "fraction (1 = no)" 0.5 0 1
+;control reverse-at "Reverse Sweep at" real "fraction (1 = no)" 0.5 0 1
 ;control starta "Initial Tremolo Amount" int "%" 20 0 100
 ;control enda "Final Tremolo Amount" int "%" 60 0 100
 
@@ -37,11 +37,11 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 
 (load "sweep.lsp" :verbose t :print t)
 
-(setq am-freq (control-sweep startf endf freq-sweep-type reverse-point))
+(setq am-freq (control-sweep startf endf freq-sweep-type reverse-at))
 
-;todo: optional sweep type maybe, besides linear
-;hmmm: should the reverse point auto-apply to the wet ramp too?
-(setq wet (control-sweep (/ starta 100.0) (/ enda 100.0)))
+;todo: optional wet sweep type maybe, besides linear
+;hmmm: should the reverse point auto-apply to the wet ramp too? Yes for now.
+(setq wet (control-sweep (/ starta 100.0) (/ enda 100.0) 0 reverse-at))
 (setq dry (auto-dry wet))
 
 (multichan-expand #'am-sweep *track* wet dry am-freq *trem-table*
