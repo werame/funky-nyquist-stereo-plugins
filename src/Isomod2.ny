@@ -5,7 +5,7 @@
 ;action "Modulating..."
 ;preview selection
 ;author "Steve Daulton, We Rame"
-;release 0.3.7.1
+;release 0.3.7.4
 $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ;; We Rame's stereo version with phase amplitude per channel. A modification of the original:
@@ -34,17 +34,13 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 (setq *trem-table*
    (abs-env (maketable (pwl ft 1 (- pw ft) 1 (+ pw ft) -1 (- 1 ft) -1 1 0))))
 
-; has potential for more complex shapes, but the dialog box is pretty limiting
-(setq am-freq (case freq-sweep-type
-   (0 (pwlv startf 1.0 endf))
-   (1 (pwev startf 1.0 endf))))
-; ^^ this sweeper is the same as for wet really, just diff names and has type!
-; make type optional and reuse
-
 (load "sweep.lsp" :verbose t :print t)
 
+; has potential for more complex shapes, but the dialog box is pretty limiting
+(setq am-freq (control-sweep startf endf freq-sweep-type))
+
 ;todo: optional sweep type maybe, besides linear
-(setq wet (wet-sweep (/ starta 100.0) (/ enda 100.0)))
+(setq wet (control-sweep (/ starta 100.0) (/ enda 100.0)))
 (setq dry (auto-dry wet))
 
 ; todo: this now allows mc-expanded starta and enda; maybe add sep. ctrls.

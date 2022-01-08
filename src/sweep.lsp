@@ -1,5 +1,5 @@
 ;; author "Steve Daulton, We Rame"
-;; release 0.3.7
+;; release 0.3.7.1
 ;; $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ;; Library shared by several plugins
@@ -10,8 +10,11 @@
 (defun sweep (sf ef wf ph)
      (mult 0.5 (sum 1.0 (fmlfo (pwlv sf 1.0 ef) wf ph))))
 
-(defun wet-sweep (ini-wet fin-wet)
-   (pwlv ini-wet 1 fin-wet))
+; starts to look like SuperCollider's Env :D
+(defun control-sweep (ini-val fin-val &optional (sweep-type 0))
+   (case sweep-type
+      (0 (pwlv ini-val 1.0 fin-val))
+      (1 (pwev ini-val 1.0 fin-val))))
 
 (defun auto-dry (wet)
    (sum 1 (mult wet -1)))
