@@ -1,6 +1,6 @@
 ;; author: We Rame, heavily refactored in a library 
 ;; starting from Steve Daulton's plugins collection
-;; release 0.3.8
+;; release 0.3.8.1
 ;; $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ;; Library shared by several plugins
@@ -19,14 +19,14 @@
 
 ;; A cyclic amplitude envelope (i.e. unipolar 0..1-valued signal) modulated
 ;; in its frequency by an arbitrary SOUND (stream) object yielding frequencies
-(defun fmenv (freq-gen table phase)
+(defun fm-env-gen (freq-gen table phase)
    (mult 0.5 (sum 1.0 (fmlfo freq-gen table phase))))
 
 ;; Amplitude modulation sweeper using a wavetable for the envelope sound gen
 ;; and control ugens ("sound"-class objects) for the wet, dry, and freq ctrls.
 (defun am-sweep (mono-snd wet-gen dry-gen mod-freq-gen table phase)
    (mult mono-snd (sum dry-gen (mult wet-gen
-       (fmenv mod-freq-gen table phase)))))
+       (fm-env-gen mod-freq-gen table phase)))))
 
 ;; converts mono track pan slider to phase: -1..1 to phase-left..phase-right
 ; todo: maybe make it return a lambda after binding phase-left phase-right
