@@ -14,6 +14,7 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 ;;   0.1: Initial version with phases added. Always returns a vector, so it doesn't work on split tracks.
 ;;   0.2: Made it work on split tracks. Requires v4 plug-in support to read pan info from Audacity.
 ;;   0.3: Refactored to use external sweep.lsb library shared with similar plugins
+;;   0.3.8: added sweep type and uses new control-sweep and new gen-based am-sweep from sweep.lsp;
 
 ;control wavenum "Tremolo Shape" choice "sine,triangle,sawtooth,inverse sawtooth,square" 0
 ;control phaseL "Starting Phase Left" real "degrees" 90 0 360
