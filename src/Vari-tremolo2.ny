@@ -5,7 +5,7 @@
 ;action "Applying Tremolo..."
 ;preview selection
 ;author "Steve Daulton, We Rame"
-;release 0.3.9
+;release 0.3.9.2
 $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ;; We Rame's stereo version with phase amplitude per channel. A modification of the original:
@@ -22,6 +22,7 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 ;control startf "Initial Tremolo Frequency" real "Hz" 2 0.1 50
 ;control endf "Final Tremolo Frequency" real "Hz" 12 0.1 50
 ;control freq-sweep-type "Frequency Sweep Type" choice "Linear,Exponential" 0
+;control mirror-point "Mirror (0 = No, 0.5 = Halfway)" real "fraction" 0.5 0 1
 ;control starta "Initial Tremolo Amount" int "%" 20 0 100
 ;control enda "Final Tremolo Amount" int "%" 60 0 100
 
@@ -36,9 +37,10 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 
 (load "sweep.lsp" :verbose t :print t)
 
-(setq am-freq (control-sweep startf endf freq-sweep-type))
+(setq am-freq (control-sweep startf endf freq-sweep-type mirror-point))
 
 ;todo: optional sweep type maybe, besides linear
+;hmmm: should the mirror point auto-apply to the wet ramp too?
 (setq wet (control-sweep (/ starta 100.0) (/ enda 100.0)))
 (setq dry (auto-dry wet))
 
