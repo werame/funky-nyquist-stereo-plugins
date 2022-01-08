@@ -5,7 +5,7 @@
 ;action "Applying Tremolo..."
 ;preview selection
 ;author "Steve Daulton, We Rame"
-;release 0.3.3.1
+;release 0.3.7.4
 $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ;; We Rame's stereo version with phase amplitude per channel. A modification of the original:
@@ -20,6 +20,7 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 ;control phaseR "Starting Phase Right" real "degrees" 270 0 360
 ;control startf "Initial Tremolo Frequency" real "Hz" 4 1 20
 ;control endf "Final Tremolo Frequency" real "Hz" 12 1 20
+;control freq-sweep-type "Frequency Sweep Type" choice "Linear,Exponential" 0
 ;control starta "Initial Tremolo Amount" int "%" 20 0 100
 ;control enda "Final Tremolo Amount" int "%" 60 0 100
 
@@ -34,5 +35,11 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 
 (load "sweep.lsp" :verbose t :print t)
 
-(multichan-expand #'am-sweep *track* (/ starta 100.0) (/ enda 100.0)
- startf endf *trem-table* (multichan-phase-from-track *track* phaseL phaseR))
+(setq am-freq (control-sweep startf endf freq-sweep-type))
+
+;todo: optional sweep type maybe, besides linear
+(setq wet (control-sweep (/ starta 100.0) (/ enda 100.0)))
+(setq dry (auto-dry wet))
+
+(multichan-expand #'am-sweep-new2 *track* wet dry am-freq *trem-table*
+ (multichan-phase-from-track *track* phaseL phaseR))
