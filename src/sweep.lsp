@@ -1,17 +1,14 @@
-;; author: We Rame, heavily refactored in a library 
+;; author: We Rame
+;; heavily refactored and expanded into a library shared by several plugins
 ;; starting from Steve Daulton's plugins collection
-;; release 0.3.9.1
+;; release 0.3.9.2
 ;; $copyright (_ "Released under terms of the GNU General Public License version 2")
-
-;; Library shared by several plugins
-
-; todo: think of better names for these functions
 
 ; a basic sweep from one value to another; shape linear or exponential
 ; starts to look like SuperCollider's Env :D
 (defun control-sweep (ini-val fin-val &optional (sweep-type 0) (mirror-at 0.0))
    (let ((genf (case sweep-type (0 'pwlv) (1 'pwev)))
-         (epts (if (< mirror-at 0.01) ; todo: near 1 too
+         (epts (if (or (< mirror-at 0.01) (> mirror-at 0.99))
                    (list ini-val 1.0 fin-val)
                    (list ini-val mirror-at fin-val 1.0 ini-val))))
       (apply genf epts)))
