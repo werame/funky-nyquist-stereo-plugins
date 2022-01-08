@@ -1,15 +1,13 @@
-;; author "Steve Daulton, We Rame"
-;; release 0.3.7.1
+;; author: We Rame, heavily refactored in a library 
+;; starting from Steve Daulton's plugins collection
+;; release 0.3.8
 ;; $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ;; Library shared by several plugins
 
 ; todo: think of better names for these functions
 
-;; Function to generate sweep tone
-(defun sweep (sf ef wf ph)
-     (mult 0.5 (sum 1.0 (fmlfo (pwlv sf 1.0 ef) wf ph))))
-
+; a basic sweep from one value to another; shape linear or exponential
 ; starts to look like SuperCollider's Env :D
 (defun control-sweep (ini-val fin-val &optional (sweep-type 0))
    (case sweep-type
@@ -24,15 +22,9 @@
 (defun fmenv (freq-gen table phase)
    (mult 0.5 (sum 1.0 (fmlfo freq-gen table phase))))
 
-; todo: maybe factor out the wet and dry sound objects
-; todo: the whole f-sweep thing could also be extracted
-(defun am-sweep (mono-snd ini-wet fin-wet ini-modf fin-modf table phase)
-   (let* ((wet (pwlv ini-wet 1 fin-wet))
-          (dry (sum 1 (mult wet -1))))
-      (mult mono-snd (sum dry (mult wet
-       (sweep ini-modf fin-modf table phase)))))) ; todo: let-var this
-
-(defun am-sweep-new2 (mono-snd wet-gen dry-gen mod-freq-gen table phase)
+;; Amplitude modulation sweeper using a wavetable for the envelope sound gen
+;; and control ugens ("sound"-class objects) for the wet, dry, and freq ctrls.
+(defun am-sweep (mono-snd wet-gen dry-gen mod-freq-gen table phase)
    (mult mono-snd (sum dry-gen (mult wet-gen
        (fmenv mod-freq-gen table phase)))))
 

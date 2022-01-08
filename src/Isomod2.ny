@@ -5,7 +5,7 @@
 ;action "Modulating..."
 ;preview selection
 ;author "Steve Daulton, We Rame"
-;release 0.3.7.4
+;release 0.3.8
 $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ;; We Rame's stereo version with phase amplitude per channel. A modification of the original:
@@ -44,5 +44,5 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 (setq dry (auto-dry wet))
 
 ; todo: this now allows mc-expanded starta and enda; maybe add sep. ctrls.
-(multichan-expand #'am-sweep-new2 *track* wet dry am-freq *trem-table*
+(multichan-expand #'am-sweep *track* wet dry am-freq *trem-table*
  (multichan-phase-from-track *track* phaseL phaseR))
