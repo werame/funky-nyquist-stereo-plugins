@@ -33,7 +33,6 @@
        (fm-env-gen mod-freq-gen table phase)))))
 
 ;; converts mono track pan slider to phase: -1..1 to phase-left..phase-right
-; todo: maybe make it return a lambda after binding phase-left phase-right
 (defun phase-from-signed-pan (signed-pan phase-left phase-right)
    (let ((unsigned-pan (* (+ 1.0 signed-pan) 0.5)))
       (+ phase-left (* (- phase-right phase-left) unsigned-pan))))
