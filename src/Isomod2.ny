@@ -5,7 +5,7 @@
 ;action "Modulating..."
 ;preview selection
 ;author "Steve Daulton, We Rame"
-;release 0.4
+;release 0.4.1
 $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ;; We Rame's stereo version with phase amplitude per channel. A modification of the original:
@@ -16,6 +16,9 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 ;;   0.3: Refactored to use external sweep.lsp library shared with similar plugins
 ;;   0.3.8: added sweep type and uses new control-sweep and new gen-based am-sweep from sweep.lsp;
 ;;   0.4: Added reverse point for sweep.
+
+;; Unfortunately we can't include the common controls boilerplate from another
+;;  file because Audacity only parses the top-level plugin file for those.
 
 ;control pw "Pulse Width [50%=Square]" real "%" 40 0 100
 ;control ft "Fade Time" real "%" 15 0 100
@@ -31,8 +34,6 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 (setq pw (/ pw 100.0))
 (setq ft (/ ft 400.0))
 (setq ft (* ft (min pw (- 1 pw)) 2))
-; more lovely boilerplate
-(setq reverse-at (/ reverse-at 100.0))
 
 ; wavetable of the tremolo lfo
 (setq *trem-table*
@@ -40,17 +41,5 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 
 (load "sweep.lsp" :verbose t :print t)
 
-; has potential for more complex shapes, but the dialog box is pretty limiting
-; todo: maybe should avoid these 3 boilerplate setqs with a helper func
-;   but that creates a packing/unpacking issue that is just as boilerplate
-;   unless we move the multichan-expand call insider the helper too
-(setq am-freq (control-sweep startf endf freq-sweep-type reverse-at))
-
-;todo: optional sweep type maybe, besides linear
-;hmmm: should the reverse point auto-apply to the wet ramp too? Yes for now.
-(setq wet (control-sweep (/ starta 100.0) (/ enda 100.0) 0 reverse-at))
-(setq dry (auto-dry wet))
-
-; todo: this now allows mc-expanded starta and enda; maybe add sep. ctrls.
-(multichan-expand #'am-sweep *track* wet dry am-freq *trem-table*
- (multichan-phase-from-track *track* phaseL phaseR))
+(sweepy-plugin startf endf freq-sweep-type reverse-at
+   starta enda phaseL phaseR *trem-table*)

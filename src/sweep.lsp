@@ -1,11 +1,12 @@
 ;; author: We Rame
 ;; heavily refactored and expanded into a library shared by several plugins
 ;; starting from Steve Daulton's plugins collection
-;; release 0.4
+;; release 0.4.1
 ;; $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ; a basic sweep from one value to another; shape linear or exponential
 ; starts to look like SuperCollider's Env :D
+; has potential for more complex shapes, but the dialog box is limiting
 (defun control-sweep (ini-val fin-val &optional (sweep-type 0) (reverse-at 1.0))
    (let ((genf (case sweep-type (0 'pwlv) (1 'pwev)))
          (epts (cond ((> reverse-at 0.99) (list ini-val 1.0 fin-val))
@@ -42,3 +43,17 @@
                (phase-from-signed-pan 1 phase-left phase-right))
        ; ^^ ignoring stereo track pan b/c it has different semantics than mono pan
        (phase-from-signed-pan (get '*track* 'pan) phase-left phase-right)))
+
+;; common boilerplate for IsoMod2 and Vari-tremolo2. Maybe it should be in a
+;; separate lib since it's less generic than the above functions, but "meh".
+(defun sweepy-plugin (ini-af fin-af af-sweep-type reverse-at
+                      ini-md fin-md phaseL phaseR wave-table)
+   (setq reverse-at (/ reverse-at 100.0)) ; todo macrolet :)
+   (let* ((am-freq (control-sweep ini-af fin-af af-sweep-type reverse-at))
+         ;Should the reverse point auto-apply to the wet ramp too? Yes for now.
+         ;todo: optional wet sweep type maybe, besides linear
+         ;todo: mc-expanded wet and dry for sep. ctrls. per chan?
+          (wet (control-sweep (/ ini-md 100.0) (/ fin-md 100.0) 0 reverse-at))
+          (dry (auto-dry wet)))
+      (multichan-expand #'am-sweep *track* wet dry am-freq wave-table
+         (multichan-phase-from-track *track* phaseL phaseR))))
