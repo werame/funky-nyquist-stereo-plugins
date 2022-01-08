@@ -5,7 +5,7 @@
 ;action "Applying Tremolo..."
 ;preview selection
 ;author "Steve Daulton, We Rame"
-;release 0.4
+;release 0.4.1
 $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ;; We Rame's stereo version with phase amplitude per channel. A modification of the original:
@@ -27,9 +27,6 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 ;control starta "Initial Tremolo Amount" int "%" 20 0 100
 ;control enda "Final Tremolo Amount" int "%" 60 0 100
 
-; more lovely boilerplate
-(setq reverse-at (/ reverse-at 100.0))
-
 ; wavetable of the tremolo lfo
 (setq *trem-table* (case wavenum
    (0 *sine-table*)
@@ -41,12 +38,5 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 
 (load "sweep.lsp" :verbose t :print t)
 
-(setq am-freq (control-sweep startf endf freq-sweep-type reverse-at))
-
-;todo: optional wet sweep type maybe, besides linear
-;hmmm: should the reverse point auto-apply to the wet ramp too? Yes for now.
-(setq wet (control-sweep (/ starta 100.0) (/ enda 100.0) 0 reverse-at))
-(setq dry (auto-dry wet))
-
-(multichan-expand #'am-sweep *track* wet dry am-freq *trem-table*
- (multichan-phase-from-track *track* phaseL phaseR))
+(sweepy-plugin startf endf freq-sweep-type reverse-at
+   starta enda phaseL phaseR *trem-table*)
