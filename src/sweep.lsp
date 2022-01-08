@@ -1,8 +1,11 @@
 ;; author: We Rame
 ;; heavily refactored and expanded into a library shared by several plugins
 ;; starting from Steve Daulton's plugins collection
-;; release 0.4.1
+;; release 0.4.2
 ;; $copyright (_ "Released under terms of the GNU General Public License version 2")
+
+;; For vscode cspell to grok "maketable" and similar :)
+;; cSpell:enableCompoundWords
 
 ; a basic sweep from one value to another; shape linear or exponential
 ; starts to look like SuperCollider's Env :D

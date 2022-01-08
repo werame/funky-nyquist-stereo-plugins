@@ -5,7 +5,7 @@
 ;action "Modulating..."
 ;preview selection
 ;author "Steve Daulton, We Rame"
-;release 0.4.1
+;release 0.4.2
 $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ;; We Rame's stereo version with phase amplitude per channel. A modification of the original:
@@ -22,24 +22,27 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 
 ;control pw "Pulse Width [50%=Square]" real "%" 40 0 100
 ;control ft "Fade Time" real "%" 15 0 100
-;control startf "Initial Modulation Frequency" real "Hz" 20 0.1 50
-;control endf "Final Modulation Frequency" real "Hz" 1 0.1 50
+;control ini-tf "Initial Modulation Frequency" real "Hz" 20 0.1 50
+;control fin-tf "Final Modulation Frequency" real "Hz" 1 0.1 50
 ;control freq-sweep-type "Frequency Sweep Type" choice "Linear,Exponential" 1
 ;control reverse-at "Reverse Sweep at" int "% (100% = no)" 50 0 100
-;control starta "Initial Modulation Depth" int "%" 50 0 100
-;control enda "Final Modulation Depth" int "%" 100 0 100
+;control ini-md "Initial Modulation Depth" int "%" 20 0 100
+;control fin-md "Final Modulation Depth" int "%" 60 0 100
 ;control phaseL "Initial Phase Left" real "degrees" 0 0 360
 ;control phaseR "Initial Phase Right" real "degrees" 180 0 360
+
+;; For vscode cspell to grok "maketable" :)
+;; cSpell:enableCompoundWords
 
 (setq pw (/ pw 100.0))
 (setq ft (/ ft 400.0))
 (setq ft (* ft (min pw (- 1 pw)) 2))
 
 ; wavetable of the tremolo lfo
-(setq *trem-table*
+(setq *tremolo-table*
    (abs-env (maketable (pwl ft 1 (- pw ft) 1 (+ pw ft) -1 (- 1 ft) -1 1 0))))
 
 (load "sweep.lsp" :verbose t :print t)
 
-(sweepy-plugin startf endf freq-sweep-type reverse-at
-   starta enda phaseL phaseR *trem-table*)
+(sweepy-plugin ini-tf fin-tf freq-sweep-type reverse-at
+   ini-md fin-md phaseL phaseR *tremolo-table*)
