@@ -1,5 +1,5 @@
 ;; author "Steve Daulton, We Rame"
-;; release 0.3.6
+;; release 0.3.7
 ;; $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ;; Library shared by several plugins
@@ -9,6 +9,12 @@
 ;; Function to generate sweep tone
 (defun sweep (sf ef wf ph)
      (mult 0.5 (sum 1.0 (fmlfo (pwlv sf 1.0 ef) wf ph))))
+
+(defun wet-sweep (ini-wet fin-wet)
+   (pwlv ini-wet 1 fin-wet))
+
+(defun auto-dry (wet)
+   (sum 1 (mult wet -1)))
 
 ;; A cyclic amplitude envelope (i.e. unipolar 0..1-valued signal) modulated
 ;; in its frequency by an arbitrary SOUND (stream) object yielding frequencies

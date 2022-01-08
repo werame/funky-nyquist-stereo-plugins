@@ -5,7 +5,7 @@
 ;action "Modulating..."
 ;preview selection
 ;author "Steve Daulton, We Rame"
-;release 0.3.7
+;release 0.3.7.1
 $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ;; We Rame's stereo version with phase amplitude per channel. A modification of the original:
@@ -38,17 +38,14 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 (setq am-freq (case freq-sweep-type
    (0 (pwlv startf 1.0 endf))
    (1 (pwev startf 1.0 endf))))
-
-(defun wet-sweep (ini-wet fin-wet)
-   (pwlv ini-wet 1 fin-wet))
-
-(defun auto-dry (wet)
-   (sum 1 (mult wet -1)))
-
-(setq wet (wet-sweep (/ starta 100.0) (/ enda 100.0)))
-(setq dry (auto-dry wet))
+; ^^ this sweeper is the same as for wet really, just diff names and has type!
+; make type optional and reuse
 
 (load "sweep.lsp" :verbose t :print t)
+
+;todo: optional sweep type maybe, besides linear
+(setq wet (wet-sweep (/ starta 100.0) (/ enda 100.0)))
+(setq dry (auto-dry wet))
 
 ; todo: this now allows mc-expanded starta and enda; maybe add sep. ctrls.
 (multichan-expand #'am-sweep-new2 *track* wet dry am-freq *trem-table*
