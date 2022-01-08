@@ -1,7 +1,7 @@
 ;; author: We Rame
 ;; heavily refactored and expanded into a library shared by several plugins
 ;; starting from Steve Daulton's plugins collection
-;; release 0.4.2
+;; release 0.4.2.1
 ;; $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ;; For vscode cspell to grok "maketable" and similar :)
@@ -40,12 +40,13 @@
 
 ;; if stereo track make array of phases for multichan-expand
 ;; else compute one phase using mono track pan
-(defun multichan-phase-from-track (track phase-left phase-right)
-   (if (arrayp track)
+(defun multichan-phase-from-track (qtrack phase-left phase-right)
+   (if (arrayp (eval qtrack))
        (vector (phase-from-signed-pan -1 phase-left phase-right) 
                (phase-from-signed-pan 1 phase-left phase-right))
        ; ^^ ignoring stereo track pan b/c it has different semantics than mono pan
-       (phase-from-signed-pan (get '*track* 'pan) phase-left phase-right)))
+       (phase-from-signed-pan (get qtrack 'pan) phase-left phase-right)))
+       ; ^^ props don't get copied, so we need pass in the quoted *track*
 
 ;; common boilerplate for IsoMod2 and Vari-tremolo2. Maybe it should be in a
 ;; separate lib since it's less generic than the above functions, but "meh".
@@ -59,4 +60,4 @@
           (wet (control-sweep (/ ini-md 100.0) (/ fin-md 100.0) 0 reverse-at))
           (dry (auto-dry wet)))
       (multichan-expand #'am-sweep *track* wet dry am-freq wave-table
-         (multichan-phase-from-track *track* phaseL phaseR))))
+         (multichan-phase-from-track '*track* phaseL phaseR))))
