@@ -5,6 +5,7 @@ Presently just:
 
 * Isomod2, with left and right amplitude phases.
 * Vari-tremolo2, with left and right amplitude phases.
+* Vari-tremolo2i, interpolating version between two keyframe shapes.
 
 These share a common `sweep.lsp` library that must also be present in the Audacity plugins directory.
 
@@ -22,3 +23,5 @@ v0.2.: Made it work on split tracks. Requires v4 Audacity plug-in support to rea
 v0.3: Refactored to use external `sweep.lsb` library shared with similar plugins.
 
 v0.4: Added sweep type: just exponential besides linear for now. Added reversal point for sweep, so it can ramp and then down, or vice-versa. Refactored `sweep.lsp` library to be internally ugen-based in most parameters, to make such features additions easy. 
+
+v0.4.3 Added (my quickly adapted) interpolating version of Vari-tremolo2. Needs more polish.
