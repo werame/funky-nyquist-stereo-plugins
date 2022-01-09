@@ -1,0 +1,23 @@
+{
+    "$schema": "./node_modules/@cspell/cspell-types/cspell.schema.json",
+    "version": "0.2",
+    "language": "en-US",
+    "flagWords": ["hte"],
+    "ignorePaths": [
+        ".git",
+        ".gitignore",
+        ".vscodeignore",
+        "*.lock",
+        "*.log",
+        "languageCodes.ts",
+        "package-lock.json",
+    ],
+    "ignoreWords": ["setq", "defun", "arrayp", "mult"], // obviously need a better solution than this
+    "languageSettings": [
+        {
+            "languageId": "lisp",
+            "allowCompoundWords": true
+        }
+    ],
+    "useGitignore": true
+}

@@ -27,9 +27,6 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 ;control ini-md "Initial Tremolo Amount" int "%" 60 0 100
 ;control fin-md "Final Tremolo Amount" int "%" 20 0 100
 
-;; For vscode cspell to grok "maketable" :)
-;; cSpell:enableCompoundWords
-
 ; wavetable of the tremolo lfo
 (setq *tremolo-table* (case wave-num
    (0 *sine-table*)

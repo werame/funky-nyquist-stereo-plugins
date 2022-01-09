@@ -31,9 +31,6 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 ;control phaseL "Initial Phase Left" real "degrees" 0 0 360
 ;control phaseR "Initial Phase Right" real "degrees" 180 0 360
 
-;; For vscode cspell to grok "maketable" :)
-;; cSpell:enableCompoundWords
-
 (setq pw (/ pw 100.0))
 (setq ft (/ ft 400.0))
 (setq ft (* ft (min pw (- 1 pw)) 2))

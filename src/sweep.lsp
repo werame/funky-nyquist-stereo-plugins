@@ -4,9 +4,6 @@
 ;; release 0.4.2.1
 ;; $copyright (_ "Released under terms of the GNU General Public License version 2")
 
-;; For vscode cspell to grok "maketable" and similar :)
-;; cSpell:enableCompoundWords
-
 ; a basic sweep from one value to another; shape linear or exponential
 ; starts to look like SuperCollider's Env :D
 ; has potential for more complex shapes, but the dialog box is limiting
