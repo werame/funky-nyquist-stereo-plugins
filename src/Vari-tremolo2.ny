@@ -5,17 +5,11 @@
 ;action "Applying Tremolo..."
 ;preview selection
 ;author "Steve Daulton, We Rame"
-;release 0.4.2
+;release 0.4.2.1
 $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ;; We Rame's stereo version with phase amplitude per channel. A modification of the original:
 ;info "by Steve Daulton. Released under terms of GPL Version 2\nhttp://audacity.easyspacepro.com\n\n'Starting phase' sets where to start tremolo in the waveform cycle.\nThe speed and depth of the tremolo oscilation can be set for the\nstart and the end of the selection.\nThe transition from initial settings to final settings is linear."
-;; Changelog for the mod
-;;   0.1: Initial version with phases added. Always returns a vector, so it doesn't work on split tracks.
-;;   0.2: Made it work on split tracks. Requires v4 plug-in support to read pan info from Audacity.
-;;   0.3: Refactored to use external sweep.lsb library shared with similar plugins
-;;   0.3.8: Added sweep type and uses new control-sweep and new gen-based am-sweep from sweep.lsp;
-;;   0.4: Added reverse point for sweep.
 
 ;control wave-num "Tremolo Shape" choice "Sine,Triangle,Sawtooth,Inverse sawtooth,Square" 0
 ;control phaseL "Starting Phase Left" real "degrees" 90 0 360

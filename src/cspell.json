@@ -2,7 +2,9 @@
     "$schema": "./node_modules/@cspell/cspell-types/cspell.schema.json",
     "version": "0.2",
     "language": "en-US",
-    "flagWords": ["hte"],
+    "flagWords": [
+        "hte"
+    ],
     "ignorePaths": [
         ".git",
         ".gitignore",
@@ -10,14 +12,24 @@
         "*.lock",
         "*.log",
         "languageCodes.ts",
-        "package-lock.json",
+        "package-lock.json"
     ],
-    "ignoreWords": ["setq", "defun", "arrayp", "mult"], // obviously need a better solution than this
+    // obviously need a better solution than this
+    "ignoreWords": [
+        "setq",
+        "defun",
+        "arrayp",
+        "mult"
+    ],
     "languageSettings": [
         {
             "languageId": "lisp",
-            "allowCompoundWords": true
+            "allowCompoundWords": true // for maketable and the like
         }
     ],
-    "useGitignore": true
+    "useGitignore": true,
+    // this one gets auto-generated when you click "add words to cspell configuration"
+    "words": [
+        "cond"
+    ]
 }

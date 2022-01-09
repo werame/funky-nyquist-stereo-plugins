@@ -9,4 +9,16 @@ Presently just:
 These share a common `sweep.lsp` library that must also be present in the Audacity plugins directory.
 
 These plugins work on both stereo tracks and "split stereo" pairs of mono tracks that have the 
-pan slider set appropriately, which is commonly done via the (Shift+M I) track menu "Split Stereo Track" command.
+pan slider set appropriately, which is commonly done via the track menu "Split Stereo Track" command (keyboard shortcut: Shift+M I) .
+
+----
+
+## Changelog for the mod
+
+v0.1. Initial version with phases added. Always returned a vector of sounds, so it didn't work on split tracks.
+
+v0.2.: Made it work on split tracks. Requires v4 Audacity plug-in support to read pan info from Audacity. (I don't know exactly when Audacity stated supporting "v4" plug-ins, but the Audacity 3.x series supports them. Audacity plugin protocol version number isn't matched to Audacity major version numbers.)
+
+v0.3: Refactored to use external `sweep.lsb` library shared with similar plugins.
+
+v0.4: Added sweep type: just exponential besides linear for now. Added reversal point for sweep, so it can ramp and then down, or vice-versa. Refactored `sweep.lsp` library to be internally ugen-based in most parameters, to make such features additions easy. 
