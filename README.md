@@ -25,3 +25,14 @@ v0.3: Refactored to use external `sweep.lsb` library shared with similar plugins
 v0.4: Added sweep type: just exponential besides linear for now. Added reversal point for sweep, so it can ramp and then down, or vice-versa. Refactored `sweep.lsp` library to be internally ugen-based in most parameters, to make such features additions easy. 
 
 v0.4.3 Added (my quickly adapted) interpolating version of Vari-tremolo2. Needs more polish.
+
+----
+## Quick visual demo for the latter:
+
+![image](https://user-images.githubusercontent.com/97036286/148672528-c699f31e-3f53-47bb-bb5f-d232afb1c0e6.png)
+
+Using these settings
+
+![image](https://user-images.githubusercontent.com/97036286/148672553-d3a1ee5f-904e-416a-a0ec-43adc1b16827.png)
+
+
