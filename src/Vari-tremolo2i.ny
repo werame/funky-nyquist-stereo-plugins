@@ -54,14 +54,17 @@ $copyright (_ "Released under terms of the GNU General Public License version 2"
 ; IIRC not using the maketable helper because that only supports step=1,
 ; although (todo) it seems to call snd-extent so maybe we can make it work.
 ; todo: maybe add feature to shift sounds to zero, because mult<1 raises them
-(setq *tremolo-table* (abs-env (list 
-    (siosc (hz-to-step steps) (const 0)
-           (list          (mult maxa1 (wave-snd wave1 0)) ; todo: let
-            ctime         (mult maxa1 (wave-snd wave1 0))
-            0.5           (mult maxa2 (wave-snd wave2 0))
-            (+ 0.5 ctime) (mult maxa2 (wave-snd wave2 0))
-            1             (mult maxa1 (wave-snd wave1 0))))
-    (hz-to-step steps) t)))
+; since the final transformation expects the signal to be between -1 and 1.
+(setq *tremolo-table* (abs-env 
+  (let ((skf-ini (mult maxa1 (wave-snd wave1 0)))
+        (skf-fin (mult maxa2 (wave-snd wave2 0))))
+    (list (siosc (hz-to-step steps) (const 0)
+           (list          skf-ini
+            ctime         skf-ini
+            0.5           skf-fin
+            (+ 0.5 ctime) skf-fin
+            1             skf-ini))
+        (hz-to-step steps) t))))
 
 (psetq freq-sweep-type 1 reverse-at 50.0) ; those damn percentages!
 (setq phaseL 0) ; too many paras in the box adds a scroll
