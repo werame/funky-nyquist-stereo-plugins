@@ -1,7 +1,7 @@
 ;; author: We Rame
 ;; heavily refactored and expanded into a library shared by several plugins
 ;; starting from Steve Daulton's plugins collection
-;; release 0.4.2.1
+;; release 0.4.3
 ;; $copyright (_ "Released under terms of the GNU General Public License version 2")
 
 ; a basic sweep from one value to another; shape linear or exponential
@@ -46,14 +46,27 @@
 
 ;; common boilerplate for IsoMod2 and Vari-tremolo2. Maybe it should be in a
 ;; separate lib since it's less generic than the above functions, but "meh".
+
+(defmacro div-by-100 (var)
+   `(setq ,var (* 0.01 ,var)))
+
+(defmacro div-each-by-100 (&rest var-list)
+   `(when ,(consp var-list)
+      (div-by-100 ,(first var-list)) 
+      (div-each-by-100 ,@(rest var-list))))
+;; non-recursive version, but not CL compliant and I'm afraid of mapcar bugs
+;(defmacro div-each-by-100 (&rest var-list)
+;  (let ((hmmm (lambda (var) (macroexpand-1 `(div-by-100 ,var)))))
+;    `(eval (cons 'progn (mapcar ,hmmm ',var-list)))))
+
 (defun sweepy-plugin (ini-af fin-af af-sweep-type reverse-at
                       ini-md fin-md phaseL phaseR wave-table)
-   (setq reverse-at (/ reverse-at 100.0)) ; todo macrolet :)
+   (div-each-by-100 reverse-at ini-md fin-md)
    (let* ((am-freq (control-sweep ini-af fin-af af-sweep-type reverse-at))
          ;Should the reverse point auto-apply to the wet ramp too? Yes for now.
          ;todo: optional wet sweep type maybe, besides linear
          ;todo: mc-expanded wet and dry for sep. ctrls. per chan?
-          (wet (control-sweep (/ ini-md 100.0) (/ fin-md 100.0) 0 reverse-at))
+          (wet (control-sweep ini-md fin-md 0 reverse-at))
           (dry (auto-dry wet)))
       (multichan-expand #'am-sweep *track* wet dry am-freq wave-table
          (multichan-phase-from-track '*track* phaseL phaseR))))
